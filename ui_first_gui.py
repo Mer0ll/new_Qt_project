@@ -45,8 +45,9 @@ class Ui_Form(object):
 
         self.output_2 = QLineEdit(Form)
         self.output_2.setObjectName(u"output_2")
+        self.output_2.setEnabled(True)
         self.output_2.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.output_2.setEchoMode(QLineEdit.NoEcho)
+        self.output_2.setEchoMode(QLineEdit.Normal)
         self.output_2.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout.addWidget(self.output_2)
@@ -54,10 +55,10 @@ class Ui_Form(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.pushButton = QPushButton(Form)
-        self.pushButton.setObjectName(u"pushButton")
+        self.button = QPushButton(Form)
+        self.button.setObjectName(u"button")
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.button)
 
 
         self.horizontalLayout_2.addLayout(self.verticalLayout)
@@ -75,6 +76,6 @@ class Ui_Form(object):
         self.output_2.setInputMask("")
         self.output_2.setText("")
         self.output_2.setPlaceholderText(QCoreApplication.translate("Form", u"OutPut", None))
-        self.pushButton.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0435\u0432\u0435\u0440\u043d\u0438!", None))
+        self.button.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0435\u0432\u0435\u0440\u043d\u0438!", None))
     # retranslateUi
 
