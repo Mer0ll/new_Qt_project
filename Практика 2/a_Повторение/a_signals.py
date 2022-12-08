@@ -31,14 +31,14 @@ class Window(QtWidgets.QMainWindow):
     #     self.lineEditMirror = QtWidgets.QLineEdit()
     #     self.pushButtonMirror = QtWidgets.QPushButton("pushButton")
     #
-    #     layout_1 = QtWidgets.QHBoxLayout()
+    #     layout1 = QtWidgets.QHBoxLayout()
     #
-    #     layout_1.addWidget(self.lineEditInput)
-    #     layout_1.addWidget(self.lineEditMirror)
-    #     layout_1.addWidget(self.pushButtonMirror)
+    #     layout1.addWidget(self.lineEditInput)
+    #     layout1.addWidget(self.lineEditMirror)
+    #     layout1.addWidget(self.pushButtonMirror)
     #
     #     main_layout = QtWidgets.QVBoxLayout()
-    #     main_layout.addLayout(layout_1)
+    #     main_layout.addLayout(layout1)
     #     main_layout.addWidget(self.pushButtonMirror)
     #
     #     self.setLayout(main_layout)

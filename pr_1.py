@@ -283,7 +283,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.progressBar)
 
         self.label = QLabel(self.groupBox_3)
-        self.label.setObjectName(u"label")
+        self.label.setObjectName(u"line_1")
 
         self.verticalLayout_6.addWidget(self.label)
 

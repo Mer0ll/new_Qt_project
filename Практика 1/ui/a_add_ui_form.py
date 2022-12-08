@@ -162,7 +162,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.label = QLabel(self.page)
-        self.label.setObjectName(u"label")
+        self.label.setObjectName(u"line_1")
         self.label.setMinimumSize(QSize(80, 0))
 
         self.horizontalLayout_5.addWidget(self.label)
