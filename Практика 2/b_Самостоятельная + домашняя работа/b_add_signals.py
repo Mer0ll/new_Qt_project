@@ -184,16 +184,6 @@ class Window(QtWidgets.QWidget):
         self.plainTextEditLog.setPlainText(self.dateTimeEdit.text())
 
 
-
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication()
 

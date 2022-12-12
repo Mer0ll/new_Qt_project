@@ -5,11 +5,14 @@
 import time
 
 import psutil
-from PySide6 import QtCore
+from PySide6 import QtCore, QtWidgets
+
+from ui_b_add_signals import Ui_Form
 
 
 class SystemInfo(QtCore.QThread):
-    systemInfoReceived = ...  # TODO Создайте экземпляр класса Signal и передайте ему в конструктор тип данных передаваемого значения (в текущем случае list)
+    systemInfoReceived = QtCore.Signal(
+        list)  # Создайте экземпляр класса Signal и передайте ему в конструктор тип данных передаваемого значения (в текущем случае list)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -19,10 +22,10 @@ class SystemInfo(QtCore.QThread):
         if self.delay is None:  # Если задержка не передана в поток перед его запуском
             self.delay = 1  # то устанавливайте значение 1
 
-        while True:  #  Запустите бесконечный цикл получения информации о системе
+        while True:  # Запустите бесконечный цикл получения информации о системе
             cpu_value = psutil.cpu_percent()  # с помощью вызова функции cpu_percent() в пакете psutil получите загрузку CPU
             ram_value = psutil.virtual_memory().percent  # с помощью вызова функции virtual_memory().percent в пакете psutil получите загрузку RAM
-            self.systemSignal.emit()  # с помощью метода .emit передайте в виде списка данные о загрузке CPU и RAM
+            self.systemInfoReceived.emit([cpu_value, ram_value])  # с помощью метода .emit передайте в виде списка данные о загрузке CPU и RAM
             time.sleep(self.delay)  # с помощью функции .sleep() приостановите выполнение цикла на время self.delay
 
 
@@ -57,3 +60,33 @@ class WeatherHandler(QtCore.QThread):
             ваш_сигнал.emit(data)
             sleep(delay)
             """
+
+
+class Window(QtWidgets.QWidget):
+    def __init__(self, patern=None):
+        super().__init__(patern)
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        self.initTread()
+        self.initSignal()
+
+    def initTread(self):
+        self.tread_info = SystemInfo()
+        # self.tread_weatwer = WeatherHandler()
+
+
+    def initSignal(self):
+        self.ui.pushButton.clicked.connect(self.startProccesSystemInfo)
+
+
+    def startProccesSystemInfo(self):
+        self.tread_info.start()
+
+
+if __name__ == '__main__':
+    app = QtWidgets.QApplication()
+
+    window = Window()
+    window.show()
+
+    app.exec()
