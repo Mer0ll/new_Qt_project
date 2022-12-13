@@ -9,3 +9,8 @@ data = responce.json()
 # print(data)
 for key in data.keys():
     print(key, data[key])
+
+
+n = 59.689457
+
+print('{:.2f}'.format(n))

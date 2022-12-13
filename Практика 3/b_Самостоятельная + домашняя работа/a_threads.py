@@ -29,6 +29,7 @@ class SystemInfo(QtCore.QThread):
             self.systemInfoReceived.emit(
                 [cpu_value, ram_value])  # с помощью метода .emit передайте в виде списка данные о загрузке CPU и RAM
             time.sleep(self.delay)  # с помощью функции .sleep() приостановите выполнение цикла на время self.delay
+        self.finished.emit()
 
 
 class WeatherHandler(QtCore.QThread):
@@ -59,12 +60,15 @@ class WeatherHandler(QtCore.QThread):
             # Примерный код ниже
             response = requests.get(self.__api_url)
             data = response.json()
-            data_dict = {'Координаты': f"{data['latitude']} N {data['longitude']} E",
+            N = '{:.2f}'.format(float(data['latitude']))
+            E = '{:.2f}'.format(float(data['longitude']))
+            data_dict = {'Координаты': f"{N} N {E} E",
                          'Температура': f"{data['current_weather']['temperature']}",
                          'Скорость ветра': f"{data['current_weather']['windspeed']} м/с"}
 
             self.weatherhandler.emit(data_dict)
             time.sleep(self.__delay)
+        self.finished1.emit()
 
 
 class Window(QtWidgets.QWidget):
@@ -85,6 +89,10 @@ class Window(QtWidgets.QWidget):
 
         self.ui.pushButton_2.clicked.connect(self.startProccesWeatherHandler)
         self.threadWeatwer.weatherhandler.connect(self.reportProgressWeatherHandler)
+
+        self.threadInfo.finished.connect(self.threadInfo.deleteLater)
+
+        self.threadWeatwer.finished.connect(self.threadWeatwer.deleteLater)
 
     def startProccesSystemInfo(self):
         self.threadInfo.start()  # запуск потока SystemInfo
