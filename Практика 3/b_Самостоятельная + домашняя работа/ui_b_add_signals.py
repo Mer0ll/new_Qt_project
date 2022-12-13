@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGroupBox, QHBoxLayout,
-    QLabel, QLineEdit, QListView, QPushButton,
+    QLabel, QLineEdit, QPlainTextEdit, QPushButton,
     QSizePolicy, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
@@ -112,10 +112,10 @@ class Ui_Form(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.listView = QListView(self.groupBox_2)
-        self.listView.setObjectName(u"listView")
+        self.plainTextEdit = QPlainTextEdit(self.groupBox_2)
+        self.plainTextEdit.setObjectName(u"plainTextEdit")
 
-        self.verticalLayout_3.addWidget(self.listView)
+        self.verticalLayout_3.addWidget(self.plainTextEdit)
 
         self.pushButton_2 = QPushButton(self.groupBox_2)
         self.pushButton_2.setObjectName(u"pushButton_2")

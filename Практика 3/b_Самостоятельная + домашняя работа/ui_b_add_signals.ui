@@ -139,7 +139,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QListView" name="listView"/>
+           <widget class="QPlainTextEdit" name="plainTextEdit"/>
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_2">

@@ -5,6 +5,7 @@
 import time
 
 import psutil
+import requests
 from PySide6 import QtCore, QtWidgets
 
 from ui_b_add_signals import Ui_Form
@@ -25,19 +26,21 @@ class SystemInfo(QtCore.QThread):
         while True:  # Запустите бесконечный цикл получения информации о системе
             cpu_value = psutil.cpu_percent()  # с помощью вызова функции cpu_percent() в пакете psutil получите загрузку CPU
             ram_value = psutil.virtual_memory().percent  # с помощью вызова функции virtual_memory().percent в пакете psutil получите загрузку RAM
-            self.systemInfoReceived.emit([cpu_value, ram_value])  # с помощью метода .emit передайте в виде списка данные о загрузке CPU и RAM
+            self.systemInfoReceived.emit(
+                [cpu_value, ram_value])  # с помощью метода .emit передайте в виде списка данные о загрузке CPU и RAM
             time.sleep(self.delay)  # с помощью функции .sleep() приостановите выполнение цикла на время self.delay
 
 
 class WeatherHandler(QtCore.QThread):
-    # TODO Пропишите сигналы, которые считаете нужными
+    #  Пропишите сигналы, которые считаете нужными
+    weatherhandler = QtCore.Signal(dict)
 
-    def __init__(self, lat, lon, parent=None):
+    def __init__(self, lat=59.94, lon=30.31, parent=None):
         super().__init__(parent)
 
         self.__api_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
-        self.__delay = 10
-        self.__status = None
+        self.__delay = 3600
+        self.__status = True
 
     def setDelay(self, delay) -> None:
         """
@@ -50,16 +53,18 @@ class WeatherHandler(QtCore.QThread):
         self.__delay = delay
 
     def run(self) -> None:
-        # TODO настройте метод для корректной работы
+        # настройте метод для корректной работы
 
         while self.__status:
-            # TODO Примерный код ниже
-            """
+            # Примерный код ниже
             response = requests.get(self.__api_url)
             data = response.json()
-            ваш_сигнал.emit(data)
-            sleep(delay)
-            """
+            data_dict = {'Координаты': f"{data['latitude']} N {data['longitude']} E",
+                         'Температура': f"{data['current_weather']['temperature']}",
+                         'Скорость ветра': f"{data['current_weather']['windspeed']} м/с"}
+
+            self.weatherhandler.emit(data_dict)
+            time.sleep(self.__delay)
 
 
 class Window(QtWidgets.QWidget):
@@ -67,20 +72,42 @@ class Window(QtWidgets.QWidget):
         super().__init__(patern)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.initTread()
+        self.initThread()
         self.initSignal()
 
-    def initTread(self):
-        self.tread_info = SystemInfo()
-        # self.tread_weatwer = WeatherHandler()
-
+    def initThread(self):
+        self.threadInfo = SystemInfo()  # создаем экземпляр
+        self.threadWeatwer = WeatherHandler()  # создаем экземпляр
 
     def initSignal(self):
         self.ui.pushButton.clicked.connect(self.startProccesSystemInfo)
+        self.threadInfo.systemInfoReceived.connect(self.reportProgress)
 
+        self.ui.pushButton_2.clicked.connect(self.startProccesWeatherHandler)
+        self.threadWeatwer.weatherhandler.connect(self.reportProgressWeatherHandler)
 
     def startProccesSystemInfo(self):
-        self.tread_info.start()
+        self.threadInfo.start()  # запуск потока SystemInfo
+
+    def startProccesWeatherHandler(self):
+        self.threadWeatwer.start()  # запуск потока WeatherHandler
+
+    def reportProgress(self, s):
+        """
+         Приём данных из потока и обработка их в основном цикле приложения
+        """
+        self.ui.lineEdit.setText(f'{s[0]}')
+        self.ui.lineEdit_2.setText(f'{s[1]}%')
+
+    def reportProgressWeatherHandler(self, p):
+        """
+         Приём данных из потока и обработка их в основном цикле приложения
+        """
+        str_ = ''
+        for key in p.keys():
+            str_ += f'{key}: {p[key]}\n'
+        # print(str_)
+        self.ui.plainTextEdit.setPlainText(str_)
 
 
 if __name__ == '__main__':
