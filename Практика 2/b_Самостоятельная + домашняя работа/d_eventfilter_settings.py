@@ -18,7 +18,7 @@
    в него соответствующие значения
 """
 
-from PySide6 import QtWidgets, QtGui
+from PySide6 import QtWidgets, QtGui, QtCore
 
 from ui.d_eventfilter_settings import Ui_Form
 
@@ -30,7 +30,12 @@ class Window(QtWidgets.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.initSignals()
-        self.ui.comboBox.addItems(['oct', 'hex', 'bin', 'dec'])
+        self.ui.comboBox.addItems(['dec', 'oct', 'hex', 'bin'])
+
+        self.settings = QtCore.QSettings("ko")
+
+        self.ui.comboBox.setCurrentText(str(self.settings.value('valueComboBox', -1)))
+        print(self.settings.fileName())
 
     def initSignals(self):
         self.ui.dial.valueChanged.connect(self.setDataLSD1)
@@ -62,6 +67,16 @@ class Window(QtWidgets.QWidget):
             self.ui.dial.setValue(self.ui.dial.value() + 1)
         elif event.text() == '-':
             self.ui.dial.setValue(self.ui.dial.value() - 1)
+
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
+        """
+        Событие закрытия окна
+        """
+        self.settings.setValue('valueComboBox', self.ui.comboBox.currentText())
+
+
+
+
 
 
 if __name__ == "__main__":
