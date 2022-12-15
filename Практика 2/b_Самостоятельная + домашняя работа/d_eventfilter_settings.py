@@ -18,7 +18,7 @@
    в него соответствующие значения
 """
 
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtGui
 
 from ui.d_eventfilter_settings import Ui_Form
 
@@ -56,6 +56,12 @@ class Window(QtWidgets.QWidget):
             self.ui.lcdNumber.setOctMode()
         if self.ui.comboBox.currentText() == 'bin':
             self.ui.lcdNumber.setBinMode()
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
+        if event.text() == '+':
+            self.ui.dial.setValue(self.ui.dial.value() + 1)
+        elif event.text() == '-':
+            self.ui.dial.setValue(self.ui.dial.value() - 1)
 
 
 if __name__ == "__main__":
