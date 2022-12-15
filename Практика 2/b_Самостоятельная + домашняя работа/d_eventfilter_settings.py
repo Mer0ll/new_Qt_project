@@ -20,11 +20,28 @@
 
 from PySide6 import QtWidgets
 
+from ui.d_eventfilter_settings import Ui_Form
+
 
 class Window(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        self.initSignals()
+
+    def initSignals(self):
+        self.ui.dial.valueChanged.connect(self.setDataLSD1)
+        self.ui.horizontalSlider.valueChanged.connect(self.setDataLSD2)
+
+    def setDataLSD1(self):
+        self.ui.lcdNumber.display(self.ui.dial.value())
+        self.ui.horizontalSlider.setValue(self.ui.dial.value())
+
+    def setDataLSD2(self):
+        self.ui.lcdNumber.display(self.ui.horizontalSlider.value())
+        self.ui.dial.setValue(self.ui.horizontalSlider.value())
 
 
 if __name__ == "__main__":

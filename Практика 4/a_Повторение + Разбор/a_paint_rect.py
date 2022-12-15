@@ -1,5 +1,5 @@
 import time
-from PySide6 import QtCore, QtWidgets, QtGui
+from PySide2 import QtCore, QtWidgets, QtGui
 
 
 class MyDrawRect(QtWidgets.QWidget):
@@ -18,10 +18,12 @@ class MyDrawRect(QtWidgets.QWidget):
         self.repaint()
 
     def mousePressEvent(self, event: QtGui.QMouseEvent) -> None:
-        self.x1, self.y1 = event.x(), event.y()
-        self.x2, self.y2 = event.x(), event.y()
-        self.repaint()
-
+        if event.button() == QtCore.LeftButton:
+            self.x1, self.y1 = event.x(), event.y()
+            self.x2, self.y2 = event.x(), event.y()
+            self.repaint()
+        if event.button() == QtCore.RightButton:
+            ...
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication()
