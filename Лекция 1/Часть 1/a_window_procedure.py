@@ -11,14 +11,14 @@ myWindow = QtWidgets.QWidget()  # Создание объект окна
 # myWindow.setWindowTitle("Моя первая программа на PySide")
 # myWindow.resize(300, 150)
 #
-# line_1 = QtWidgets.QLabel("<center><strong>!!!ПРИВЕТ!!!</strong></center>")
+# label = QtWidgets.QLabel("<center><strong>!!!ПРИВЕТ!!!</strong></center>")
 # #
 # btn_close = QtWidgets.QPushButton()
 # btn_close.setText("Текст кнопки")
 # btn_close.clicked.connect(app.quit)
 # #
 # v_layout = QtWidgets.QVBoxLayout()
-# v_layout.addWidget(line_1)
+# v_layout.addWidget(label)
 # v_layout.addWidget(btn_close)
 # #
 # myWindow.setLayout(v_layout)
