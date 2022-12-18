@@ -84,4 +84,12 @@ print(f'Общее кол-во полученных байтов: {get_size(net_
 
 print('=' * 40, 'Вывод всех активных процессов', '=' * 40)
 rp = subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-Process')
-print(rp.decode(encoding='Windows-1251'))
+print(rp.decode(encoding='cp866'))
+
+print('=' * 40, 'Вывод всех служб на компьютере', '=' * 40)
+rp = subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-Service')
+print(rp.decode(encoding='cp866'))
+
+print('=' * 40, 'Вывод всех задач, планировщика задач', '=' * 40)
+rp = subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-ScheduledTask')
+print(rp.decode(encoding='cp866'))
