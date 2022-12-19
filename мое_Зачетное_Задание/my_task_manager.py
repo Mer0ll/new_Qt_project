@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore
 from ui_my_task_manager import Ui_Form
 
 
@@ -8,7 +8,7 @@ def main():
     taskmanager = TaskManager()
     taskmanager.show()
 
-    app.exec_()
+    app.exec()
 
 
 class TaskManager(QtWidgets.QWidget):
