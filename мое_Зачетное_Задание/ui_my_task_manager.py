@@ -34,6 +34,13 @@ class Ui_Form(object):
         self.comboBox = QComboBox(self.tab_3)
         self.comboBox.setObjectName(u"comboBox")
 
+        dialog_boxes = ['',
+                        'Процессор, количество ядер, текущая загрузка',
+                        'Оперативная памяти, загрузка',
+                        'Информация о жестких дисках']
+
+        self.comboBox.addItems(dialog_boxes)
+
         self.verticalLayout_2.addWidget(self.comboBox)
 
         self.textEdit_4 = QTextEdit(self.tab_3)
