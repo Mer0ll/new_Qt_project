@@ -50,7 +50,7 @@ class TaskManager(QtWidgets.QWidget):
             result += f'    Общий объем: {self.get_size(partition_usage.total)}\n'
             result += f'    Используется: {self.get_size(partition_usage.used)}\n'
             result += f'    Свободно: {self.get_size(partition_usage.free)}\n'
-            # result += f'    Процент: {self.partition_usage.percent} %\n'
+            result += f'    Процент: {partition_usage.percent} %\n'
         return result
 
 
