@@ -17,6 +17,13 @@ class TaskManager(QtWidgets.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
+        dialog_boxes = ['',
+                        'Процессор, количество ядер, текущая загрузка',
+                        'Оперативная памяти, загрузка',
+                        'Информация о жестких дисках']
+
+        self.ui.comboBox.addItems(dialog_boxes)
+
 
 if __name__ == '__main__':
     main()
