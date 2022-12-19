@@ -28,6 +28,13 @@
         <widget class="QComboBox" name="comboBox"/>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton_1">
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QTextEdit" name="textEdit_4"/>
        </item>
       </layout>
@@ -36,7 +43,14 @@
       <attribute name="title">
        <string>Процессы</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QTextEdit" name="textEdit_3"/>
        </item>
@@ -46,7 +60,14 @@
       <attribute name="title">
        <string>Службы</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QTextEdit" name="textEdit_2"/>
        </item>
@@ -57,6 +78,13 @@
        <string>Планировщик задач</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QTextEdit" name="textEdit"/>
        </item>
