@@ -12,15 +12,15 @@ def get_size(bytes, suffix='B'):
         bytes /= factor
 
 
-print('=' * 40, 'Системная информация', '=' * 40)
-uname = platform.uname()
-
-print(f'Система: {uname.system}')
-print(f'Имя узла: {uname.node}')
-print(f'Выпуск: {uname.release}')
-print(f'Версия: {uname.version}')
-print(f'Машина: {uname.machine}')
-print(f'Процессор: {uname.processor}')
+# print('=' * 40, 'Системная информация', '=' * 40)
+# uname = platform.uname()
+#
+# print(f'Система: {uname.system}')
+# print(f'Имя узла: {uname.node}')
+# print(f'Выпуск: {uname.release}')
+# print(f'Версия: {uname.version}')
+# print(f'Машина: {uname.machine}')
+# print(f'Процессор: {uname.processor}')
 
 print('=' * 40, 'Информация о процессоре', '=' * 40)
 print(f'Физические ядра:', psutil.cpu_count(logical=False))

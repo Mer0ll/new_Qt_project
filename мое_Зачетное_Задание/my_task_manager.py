@@ -1,66 +1,77 @@
-from PySide6 import QtWidgets, QtCore
-from ui_my_task_manager import Ui_Form
+from PySide6 import QtWidgets, QtCore, QtGui
+from ui_my_task_manager_mainWindow import Ui_mainForm
 import psutil
+import platform
+import time
 
 
 def main():
     app = QtWidgets.QApplication()
 
-    taskmanager = TaskManager()
+    taskmanager = MainWindows()
     taskmanager.show()
 
     app.exec()
 
 
-class TaskManager(QtWidgets.QWidget):
+class MainWindows(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_Form()
+        self.ui = Ui_mainForm()
         self.ui.setupUi(self)
+        combobox = ['',
+                    'Монитор ресурсов',
+                    'Запущенные процессы',
+                    'Службы',
+                    'Планировщик задач']
+        self.ui.comboBox.addItems(combobox)
+        self.setAboutSystem()
         self.initSignals()
-        self.partitions = psutil.disk_partitions()
+        self.initCildWindow()
 
-    @staticmethod
-    def get_size(bytes, suffix='B'):
-        factor = 1024
-        for unit in ['', 'K', 'M', 'G', 'T', 'P']:
-            if bytes < factor:
-                return f'{bytes:.2f}{unit}{suffix}'
-            bytes /= factor
+    def setAboutSystem(self):
+        uname = platform.uname()
+        self.ui.label_6.setText(uname.system)
+        self.ui.label_7.setText(uname.node)
+        self.ui.label_8.setText(uname.release)
+        self.ui.label_9.setText(uname.version)
+        self.ui.label_10.setText(uname.machine)
 
     def initSignals(self):
+        self.ui.pushButton.clicked.connect(self.openChildWindow)
 
-        self.ui.pushButton_1.clicked.connect(self.show_dialog_window)
+    def initCildWindow(self):
+        self.cildWindowResourceMonitor = ResourceMonitor()
+        self.cildWindowRunningProcesses = RunningProcesses()
+        self.cildWindowServices = Services()
+        self.cildWindowManagerTask = ManagerTask()
 
-    def show_dialog_window(self):
-        selected_dialog_window = self.ui.comboBox.currentText()
+    def openChildWindow(self):
+        if self.ui.comboBox.currentText() == 'Монитор ресурсов':
+            self.cildWindowResourceMonitor.show()
+        elif self.ui.comboBox.currentText() == 'Запущенные процессы':
+            self.cildWindowRunningProcesses.show()
+        elif self.ui.comboBox.currentText() == 'Службы':
+            self.cildWindowServices.show()
+        elif self.ui.comboBox.currentText() == 'Планировщик задач':
+            self.cildWindowManagerTask.show()
 
-        if selected_dialog_window == 'Информация о жестких дисках':
-            self.ui.textEdit_4.setPlainText(self.getdiscinfo())
 
-    def getdiscinfo(self):
-        result = ''
-        for partition in self.partitions:
-            result += f'=== Диск: {partition.device}\n'
-            result += f' Тип файловой системы: {partition.fstype}\n'
-            try:
-                partition_usage = psutil.disk_usage(partition.mountpoint)
-            except PermissionError:
-                continue
-            result += f'    Общий объем: {self.get_size(partition_usage.total)}\n'
-            result += f'    Используется: {self.get_size(partition_usage.used)}\n'
-            result += f'    Свободно: {self.get_size(partition_usage.free)}\n'
-            result += f'    Процент: {partition_usage.percent} %\n'
-        return result
+class ResourceMonitor(QtWidgets.QWidget):
+    ...
+
+
+class RunningProcesses(QtWidgets.QWidget):
+    ...
+
+
+class Services(QtWidgets.QWidget):
+    ...
+
+
+class ManagerTask(QtWidgets.QWidget):
+    ...
 
 
 if __name__ == '__main__':
     main()
-
-
- # dialog_boxes = ['',
- #                        'Процессор, количество ядер, текущая загрузка',
- #                        'Оперативная памяти, загрузка',
- #                        'Информация о жестких дисках']
- #
- #        self.comboBox.addItems(dialog_boxes)
