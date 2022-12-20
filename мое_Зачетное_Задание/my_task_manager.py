@@ -1,7 +1,11 @@
 from PySide6 import QtWidgets, QtCore, QtGui
 from ui_my_task_manager_mainWindow import Ui_mainForm
+from ui_my_task_manager_cildWindowServices import Ui_Form as UI_Service
+from ui_my_task_manager_cildManagerTask import Ui_Form as UI_ManagerTask
+from ui_my_task_manager_cildRunningProcesses import Ui_Form as UI_RunningProcesses
 import psutil
 import platform
+import subprocess
 import time
 
 
@@ -62,15 +66,53 @@ class ResourceMonitor(QtWidgets.QWidget):
 
 
 class RunningProcesses(QtWidgets.QWidget):
-    ...
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.initializationUi()
+        self.ui.setupUi(self)
+        self.initSignals()
+        rp = self.getRP()
+        self.setText(rp)
+
+    def initializationUi(self):
+        self.ui = UI_RunningProcesses()
+
+    def initSignals(self):
+        self.ui.pushButton.clicked.connect(self.closeWindow)
+
+    def closeWindow(self):
+        self.close()
+
+    def getRP(self):
+        return subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-Process').decode(
+            encoding='cp866')
+
+    def setText(self, rp):
+        self.ui.textEdit.setText(rp)
 
 
-class Services(QtWidgets.QWidget):
-    ...
+class Services(RunningProcesses):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def initializationUi(self):
+        self.ui = UI_Service()
+
+    def getRP(self):
+        return subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-Service').decode(
+            encoding='cp866')
 
 
-class ManagerTask(QtWidgets.QWidget):
-    ...
+class ManagerTask(RunningProcesses):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def initializationUi(self):
+        self.ui = UI_ManagerTask()
+
+    def getRP(self):
+        return subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-ScheduledTask').decode(
+            encoding='cp866')
 
 
 if __name__ == '__main__':
