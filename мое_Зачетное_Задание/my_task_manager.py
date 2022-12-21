@@ -88,13 +88,56 @@ class BaseWindow(QtWidgets.QWidget):
     def closeWindow(self):
         self.close()
 
+
+class WorkerCPUInfo(QtCore.QThread):
+    CPUInfo = QtCore.Signal(list)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.delay = None
+
+    def run(self) -> None:
+        if self.delay is None:
+            self.delay = 1
+        cpufreg = psutil.cpu_freq()
+        while True:
+            currentfreq = cpufreg.current  # Текущая частота
+            totalCPUusage = psutil.cpu_percent()  # Общая загруженность процессора
+            self.CPUInfo.emit([currentfreq,
+                               totalCPUusage])
+            time.sleep(self.delay)
+            self.finished.emit()
+
+
 class ResourceMonitor(BaseWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setCPUInfo()
+        self.initThread()
+        self.startThread()
+        self.initSignals()
 
+    def initThread(self):
+        self.thread1 = WorkerCPUInfo()
+
+    def startThread(self):
+        self.thread1.start()
+
+    def setCPUInfo(self):
+        uname = platform.uname()
+        self.ui.label_2.setText(uname.processor)
+        self.ui.lineEdit_2.setText(f'{psutil.cpu_count(logical=True)}')
+        self.ui.lineEdit_3.setText(f'{psutil.cpu_count(logical=False)}')
 
     def initSignals(self):
         self.ui.pushButton.clicked.connect(self.closeWindow)
+        self.thread1.CPUInfo.connect(self.reportCPUInfo)
+
+        self.thread1.finished.connect(self.thread1.deleteLater)
+
+    def reportCPUInfo(self, s):
+        self.ui.lineEdit.setText(s[0])
+        self.ui.progressBar.setValue(s[1])
 
     def closeWindow(self):
         self.close()
