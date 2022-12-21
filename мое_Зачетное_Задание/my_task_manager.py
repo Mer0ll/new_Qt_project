@@ -31,7 +31,7 @@ class MainWindows(QtWidgets.QWidget):
         self.ui.comboBox.addItems(combobox)
         self.setAboutSystem()
         self.initSignals()
-        self.initCildWindow()
+        # self.initCildWindow()
 
     def setAboutSystem(self):
         uname = platform.uname()
@@ -44,21 +44,31 @@ class MainWindows(QtWidgets.QWidget):
     def initSignals(self):
         self.ui.pushButton.clicked.connect(self.openChildWindow)
 
-    def initCildWindow(self):
-        self.cildWindowResourceMonitor = ResourceMonitor()
-        self.cildWindowRunningProcesses = RunningProcesses()
-        self.cildWindowServices = Services()
-        self.cildWindowManagerTask = ManagerTask()
-
     def openChildWindow(self):
         if self.ui.comboBox.currentText() == 'Монитор ресурсов':
-            self.cildWindowResourceMonitor.show()
+            self.openResourceMonitor()
         elif self.ui.comboBox.currentText() == 'Запущенные процессы':
-            self.cildWindowRunningProcesses.show()
+            self.openRunningProcesses()
         elif self.ui.comboBox.currentText() == 'Службы':
-            self.cildWindowServices.show()
+            self.openServices()
         elif self.ui.comboBox.currentText() == 'Планировщик задач':
-            self.cildWindowManagerTask.show()
+            self.openManagerTask()
+
+    def openResourceMonitor(self):
+        self.cildWindowResourceMonitor = ResourceMonitor()
+        self.cildWindowResourceMonitor.show()
+
+    def openRunningProcesses(self):
+        self.cildWindowRunningProcesses = RunningProcesses()
+        self.cildWindowRunningProcesses.show()
+
+    def openServices(self):
+        self.cildWindowServices = Services()
+        self.cildWindowServices.show()
+
+    def openManagerTask(self):
+        self.cildWindowManagerTask = ManagerTask()
+        self.cildWindowManagerTask.show()
 
 
 class ResourceMonitor(QtWidgets.QWidget):
@@ -72,7 +82,7 @@ class RunningProcesses(QtWidgets.QWidget):
         self.ui.setupUi(self)
         self.initSignals()
         rp = self.getRP()
-        self.setText(rp)
+        self.set_Text(rp)
 
     def initializationUi(self):
         self.ui = UI_RunningProcesses()
@@ -87,7 +97,7 @@ class RunningProcesses(QtWidgets.QWidget):
         return subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-Process').decode(
             encoding='cp866')
 
-    def setText(self, rp):
+    def set_Text(self, rp):
         self.ui.textEdit.setText(rp)
 
 
