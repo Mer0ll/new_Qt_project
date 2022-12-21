@@ -3,6 +3,7 @@ from ui_my_task_manager_mainWindow import Ui_mainForm
 from ui_my_task_manager_cildWindowServices import Ui_Form as UI_Service
 from ui_my_task_manager_cildManagerTask import Ui_Form as UI_ManagerTask
 from ui_my_task_manager_cildRunningProcesses import Ui_Form as UI_RunningProcesses
+from ui_my_task_manager_cildResourceMonitor import Ui_Form as UI_ResiurсeMonitor
 import psutil
 import platform
 import subprocess
@@ -71,16 +72,37 @@ class MainWindows(QtWidgets.QWidget):
         self.cildWindowManagerTask.show()
 
 
-class ResourceMonitor(QtWidgets.QWidget):
-    ...
-
-
-class RunningProcesses(QtWidgets.QWidget):
+class BaseWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.initializationUi()
         self.ui.setupUi(self)
         self.initSignals()
+
+    def initializationUi(self):
+        self.ui = UI_ResiurсeMonitor()
+
+    def initSignals(self):
+        self.ui.pushButton.clicked.connect(self.closeWindow)
+
+    def closeWindow(self):
+        self.close()
+
+class ResourceMonitor(BaseWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+
+    def initSignals(self):
+        self.ui.pushButton.clicked.connect(self.closeWindow)
+
+    def closeWindow(self):
+        self.close()
+
+
+class RunningProcesses(BaseWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
         rp = self.getRP()
         self.set_Text(rp)
 
