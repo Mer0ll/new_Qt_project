@@ -120,6 +120,7 @@ class WorkerRM(QtCore.QThread):
             avaram = self.get_size(svmem.available)  # Доступно Ram
             usedram = self.get_size(svmem.used)  # Используется Ram
             percentram = svmem.percent  # Процент
+            fullcpu_percent = psutil.cpu_percent(percpu=True, interval=1)
 
             self.workerCPU.emit([currentfreq,
                                  totalCPUusage,
@@ -129,7 +130,8 @@ class WorkerRM(QtCore.QThread):
                                  avaram,
                                  usedram,
                                  usedram,
-                                 percentram])
+                                 percentram,
+                                 fullcpu_percent])
             time.sleep(self.delay)
         self.finished.emit()
 
@@ -149,6 +151,12 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.label_2.setText(uname.processor)  # Процессор
         self.ui.label_13.setText(f'{psutil.cpu_count(logical=True)}')  # Всего ядер
         self.ui.label_21.setText(f'{psutil.cpu_count(logical=False)}')  # Физические ядра
+        layout_dynamic = QtWidgets.QVBoxLayout()
+        for core, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
+            label_dunamic = QtWidgets.QLabel(f'Ядро {core}: {percentage} %')
+            layout_dynamic.addWidget(label_dunamic)
+            # print(f'Ядро {core}: {percentage} %')
+        self.ui.horizontalLayout_3.addLayout(layout_dynamic)
 
     def initSignals(self):
         self.ui.pushButton.clicked.connect(self.closeWindow)
@@ -174,8 +182,6 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.label_26.setText(f'{s[5]}')
         self.ui.label_27.setText(f'{s[6]}')
         self.ui.progressBar_3.setValue(s[8])
-
-
 
 class RunningProcesses(BaseWindow):
     def __init__(self, parent=None):
