@@ -116,10 +116,20 @@ class WorkerRM(QtCore.QThread):
             cpufregmax = cpufreg.max  # Максимальная частота
             cpufregmin = cpufreg.min  # Минимальная частота
 
+            ramsize = self.get_size(svmem.total)  # Объем Ram
+            avaram = self.get_size(svmem.available)  # Доступно Ram
+            usedram = self.get_size(svmem.used)  # Используется Ram
+            percentram = svmem.percent  # Процент
+
             self.workerCPU.emit([currentfreq,
                                  totalCPUusage,
                                  cpufregmax,
-                                 cpufregmin])
+                                 cpufregmin,
+                                 ramsize,
+                                 avaram,
+                                 usedram,
+                                 usedram,
+                                 percentram])
             time.sleep(self.delay)
         self.finished.emit()
 
@@ -137,8 +147,8 @@ class ResourceMonitor(QtWidgets.QWidget):
     def setCPUInfo(self):
         uname = platform.uname()
         self.ui.label_2.setText(uname.processor)  # Процессор
-        self.ui.lineEdit_2.setText(f'{psutil.cpu_count(logical=True)}')  # Всего ядер
-        self.ui.lineEdit_3.setText(f'{psutil.cpu_count(logical=False)}')  # Физические ядра
+        self.ui.label_13.setText(f'{psutil.cpu_count(logical=True)}')  # Всего ядер
+        self.ui.label_21.setText(f'{psutil.cpu_count(logical=False)}')  # Физические ядра
 
     def initSignals(self):
         self.ui.pushButton.clicked.connect(self.closeWindow)
@@ -156,8 +166,15 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.thread1.start()
 
     def reportCPU(self, s):
-        self.ui.lineEdit.setText(f'{s[0]:.2f}')
+        self.ui.label_22.setText(f'{s[2]:.2f}МГц')
+        self.ui.label_23.setText(f'{s[3]:.2f}МГц')
+        self.ui.label_24.setText(f'{s[0]:.2f}МГц')
         self.ui.progressBar.setValue(s[1])
+        self.ui.label_25.setText(f'{s[4]}')
+        self.ui.label_26.setText(f'{s[5]}')
+        self.ui.label_27.setText(f'{s[6]}')
+        self.ui.progressBar_3.setValue(s[8])
+
 
 
 class RunningProcesses(BaseWindow):
