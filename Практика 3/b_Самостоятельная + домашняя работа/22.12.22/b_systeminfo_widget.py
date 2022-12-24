@@ -72,8 +72,8 @@ class QThreadPractice(QtWidgets.QWidget):
 
         self.ui.progressBarCPU.setValue(info_list[0])
         self.ui.labelCPUPercent.setText(f"{info_list[0]} %")
-        self.ui.progressBarRAM.setValue(info_list[1].percent)
-        self.ui.labelRAMPercent.setText(f"{info_list[1].percent} %")
+        self.ui.progressBarRAM.setValue(info_list[1])
+        self.ui.labelRAMPercent.setText(f"{info_list[1]} %")
 
     def setSystemInfoDelay(self) -> None:
         """
@@ -91,4 +91,4 @@ if __name__ == "__main__":
     myapp = QThreadPractice()
     myapp.show()
 
-    app.exec_()
+    app.exec()

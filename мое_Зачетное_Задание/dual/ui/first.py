@@ -96,7 +96,13 @@ class Window(QtWidgets.QWidget):
         self.ui.lineEdit_7.setText(f'{self.cpufreg.max:.2f}МГц')
         self.ui.lineEdit_8.setText(f'{psutil.cpu_count(logical=True)}')
         self.ui.lineEdit_9.setText(f'{psutil.cpu_count(logical=False)}')
-        self.ui.lineEdit_10.setText(f'{self.cpufreg.current:.2f}МГц')
+        self.barProgress_RAM = QtWidgets.QProgressBar()
+        sizePolicyRam = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicyRam.setHorizontalStretch(0)
+        sizePolicyRam.setVerticalStretch(0)
+        sizePolicyRam.setHeightForWidth(self.barProgress_RAM.sizePolicy().hasHeightForWidth())
+        self.barProgress_RAM.setSizePolicy(sizePolicyRam)
+        self.ui.verticalLayout_3.addWidget(self.barProgress_RAM)
 
     def memoryInfo(self):
         self.ui.lineEdit_11.setText(f'{self.get_size(self.svmem.total)}')
@@ -111,6 +117,8 @@ class Window(QtWidgets.QWidget):
         self.ui.verticalLayout_6.addWidget(self.barProgress)
 
     def progressBars(self, report):
+        self.ui.lineEdit_10.setText(f'{report[0]:.2f}МГц')
+        self.barProgress_RAM.setValue(report[0])
         self.barProgress.setValue(report[1])
 
     def initSignals(self):
