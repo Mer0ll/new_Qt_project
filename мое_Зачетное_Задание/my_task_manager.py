@@ -46,16 +46,11 @@ class MainWindows(QtWidgets.QWidget):
 
     def initChildWindow(self):
         self.flag = self.ui.comboBox.currentText()
-        match self.flag:
-            case 'Монитор ресурсов':
-                # self.ResourceMonitor()
-                ...
-            case 'Запущенные процессы':
-                self.openOpenChildWindow()
-            case 'Службы':
-                self.openOpenChildWindow()
-            case 'Планировщик задач':
-                self.openOpenChildWindow()
+        if self.flag == 'Монитор ресурсов':
+            # self.ResourceMonitor()
+            ...
+        if self.flag in ('Запущенные процессы', 'Службы', 'Планировщик задач'):
+            self.openOpenChildWindow()
 
     def openOpenChildWindow(self):
         self.childWindow = ChildWindow(self.flag)
@@ -110,8 +105,8 @@ class WorkerRM(QtCore.QThread):
 
 class ChildWindow(QtWidgets.QWidget):
     dict_gets = {'Запущенные процессы': 'Get-Process',
-             'Службы': 'Get-Service',
-             'Планировщик задач': 'Get-ScheduledTask'}
+                 'Службы': 'Get-Service',
+                 'Планировщик задач': 'Get-ScheduledTask'}
 
     def __init__(self, flag, parent=None):
         super().__init__(parent)
@@ -119,16 +114,32 @@ class ChildWindow(QtWidgets.QWidget):
         self.ui.setupUi(self)
         self.flag = flag
         self.setTitl()
-
-        print(self.getRP())
+        pr = self.getRP()
+        self.splitterRP(pr)
 
     def setTitl(self):
         self.setWindowTitle(self.flag)
         self.ui.groupBox.setTitle(self.flag)
 
     def getRP(self):
-        return subprocess.check_output(f'powershell -Executionpolicy ByPass -Command {self.dict_gets[self.flag]}').decode(
+        return subprocess.check_output(
+            f'powershell -Executionpolicy ByPass -Command {self.dict_gets[self.flag]}').decode(
             encoding='cp866')
+
+    def splitterRP(self, string):
+        b = string.strip().split('\r\n')
+        headers = b[0].split()
+        self.ui.tableWidget.setColumnCount(len(headers))  # создал столбецы
+        self.ui.tableWidget.setRowCount(len(b) - 2)  # сразу создал необходимое кол-во строк
+        self.ui.tableWidget.setHorizontalHeaderLabels(headers)  # установил заголовок столбца
+        for i in range(len(b[2:])):
+            elem = b[2:][i].split()
+            if len(elem) < len(headers) and self.flag == 'Запущенные процессы':
+                elem.insert(4, f'{0:.2f}')
+            for j in range(len(headers)):
+                self.ui.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(f'{elem[j]}'))
+
+        self.ui.tableWidget.resizeColumnsToContents()
 
 
 class ResourceMonitor(QtWidgets.QWidget):
