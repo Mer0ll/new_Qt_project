@@ -5,10 +5,8 @@ import time
 import psutil
 from PySide6 import QtWidgets, QtCore
 
-from ui_my_task_manager_cildManagerTask import Ui_Form as UI_ManagerTask
+from ui.ui_cildWindow import Ui_Form
 from ui_my_task_manager_cildResourceMonitor import Ui_Form as UI_rm
-from ui_my_task_manager_cildRunningProcesses import Ui_Form as UI_RunningProcesses
-from ui_my_task_manager_cildWindowServices import Ui_Form as UI_Service
 from ui_my_task_manager_mainWindow import Ui_mainForm
 
 
@@ -37,57 +35,31 @@ class MainWindows(QtWidgets.QWidget):
 
     def setAboutSystem(self):
         uname = platform.uname()
-        self.ui.label_6.setText(uname.system)  # Система
-        self.ui.label_7.setText(uname.node)  # Имя узла
-        self.ui.label_8.setText(uname.release)  # Выпуск
-        self.ui.label_9.setText(uname.version)  # Версия
-        self.ui.label_10.setText(uname.machine)  # Машина
+        self.ui.lineEdit_3.setText(uname.system)  # Система
+        self.ui.lineEdit_4.setText(uname.node)  # Имя узла
+        self.ui.lineEdit.setText(uname.release)  # Выпуск
+        self.ui.lineEdit_5.setText(uname.version)  # Версия
+        self.ui.lineEdit_2.setText(uname.machine)  # Машина
 
     def initSignals(self):
-        self.ui.pushButton.clicked.connect(self.openChildWindow)
+        self.ui.pushButton.clicked.connect(self.initChildWindow)
 
-    def openChildWindow(self):
-        if self.ui.comboBox.currentText() == 'Монитор ресурсов':
-            self.openResourceMonitor()
-        elif self.ui.comboBox.currentText() == 'Запущенные процессы':
-            self.openRunningProcesses()
-        elif self.ui.comboBox.currentText() == 'Службы':
-            self.openServices()
-        elif self.ui.comboBox.currentText() == 'Планировщик задач':
-            self.openManagerTask()
+    def initChildWindow(self):
+        self.flag = self.ui.comboBox.currentText()
+        match self.flag:
+            case 'Монитор ресурсов':
+                # self.ResourceMonitor()
+                ...
+            case 'Запущенные процессы':
+                self.openOpenChildWindow()
+            case 'Службы':
+                self.openOpenChildWindow()
+            case 'Планировщик задач':
+                self.openOpenChildWindow()
 
-    def openResourceMonitor(self):
-        self.cildWindowResourceMonitor = ResourceMonitor()
-        self.cildWindowResourceMonitor.show()
-
-    def openRunningProcesses(self):
-        self.cildWindowRunningProcesses = RunningProcesses()
-        self.cildWindowRunningProcesses.show()
-
-    def openServices(self):
-        self.cildWindowServices = Services()
-        self.cildWindowServices.show()
-
-    def openManagerTask(self):
-        self.cildWindowManagerTask = ManagerTask()
-        self.cildWindowManagerTask.show()
-
-
-class BaseWindow(QtWidgets.QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.initializationUi()
-        self.ui.setupUi(self)
-        self.initSignals()
-
-    def initializationUi(self):
-        self.ui = UI_RunningProcesses()
-
-    def initSignals(self):
-        self.ui.pushButton.clicked.connect(self.closeWindow)
-
-    def closeWindow(self):
-        self.close()
+    def openOpenChildWindow(self):
+        self.childWindow = ChildWindow(self.flag)
+        self.childWindow.show()
 
 
 class WorkerRM(QtCore.QThread):
@@ -136,6 +108,29 @@ class WorkerRM(QtCore.QThread):
         self.finished.emit()
 
 
+class ChildWindow(QtWidgets.QWidget):
+    dict_gets = {'Запущенные процессы': 'Get-Process',
+             'Службы': 'Get-Service',
+             'Планировщик задач': 'Get-ScheduledTask'}
+
+    def __init__(self, flag, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        self.flag = flag
+        self.setTitl()
+
+        print(self.getRP())
+
+    def setTitl(self):
+        self.setWindowTitle(self.flag)
+        self.ui.groupBox.setTitle(self.flag)
+
+    def getRP(self):
+        return subprocess.check_output(f'powershell -Executionpolicy ByPass -Command {self.dict_gets[self.flag]}').decode(
+            encoding='cp866')
+
+
 class ResourceMonitor(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -182,46 +177,6 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.label_26.setText(f'{s[5]}')
         self.ui.label_27.setText(f'{s[6]}')
         self.ui.progressBar_3.setValue(s[8])
-
-class RunningProcesses(BaseWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        rp = self.getRP()
-        self.set_Text(rp)
-
-    def initializationUi(self):
-        self.ui = UI_RunningProcesses()
-
-    def getRP(self):
-        return subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-Process').decode(
-            encoding='cp866')
-
-    def set_Text(self, rp):
-        self.ui.textEdit.setText(rp)
-
-
-class Services(RunningProcesses):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    def initializationUi(self):
-        self.ui = UI_Service()
-
-    def getRP(self):
-        return subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-Service').decode(
-            encoding='cp866')
-
-
-class ManagerTask(RunningProcesses):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    def initializationUi(self):
-        self.ui = UI_ManagerTask()
-
-    def getRP(self):
-        return subprocess.check_output('powershell -Executionpolicy ByPass -Command Get-ScheduledTask').decode(
-            encoding='cp866')
 
 
 if __name__ == '__main__':
