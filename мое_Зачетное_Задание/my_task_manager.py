@@ -6,7 +6,7 @@ import psutil
 from PySide6 import QtWidgets, QtCore
 
 from ui.ui_cildWindow import Ui_Form
-from ui_my_task_manager_cildResourceMonitor import Ui_Form as UI_rm
+from ui_my_task_manager_cildResourceMonitor2 import Ui_Form as UI_rm
 from ui_my_task_manager_mainWindow import Ui_mainForm
 
 
@@ -24,6 +24,7 @@ class MainWindows(QtWidgets.QWidget):
         super().__init__(parent)
         self.ui = Ui_mainForm()
         self.ui.setupUi(self)
+        self.flag = None
         combobox = ['',
                     'Монитор ресурсов',
                     'Запущенные процессы',
@@ -47,13 +48,16 @@ class MainWindows(QtWidgets.QWidget):
     def initChildWindow(self):
         self.flag = self.ui.comboBox.currentText()
         if self.flag == 'Монитор ресурсов':
-            # self.ResourceMonitor()
-            ...
+            self.openResourceMonitor()
         if self.flag in ('Запущенные процессы', 'Службы', 'Планировщик задач'):
             self.openOpenChildWindow()
 
     def openOpenChildWindow(self):
         self.childWindow = ChildWindow(self.flag)
+        self.childWindow.show()
+
+    def openResourceMonitor(self):
+        self.childWindow = ResourceMonitor()
         self.childWindow.show()
 
 
@@ -147,10 +151,10 @@ class ResourceMonitor(QtWidgets.QWidget):
         super().__init__(parent)
         self.ui = UI_rm()
         self.ui.setupUi(self)
-        self.setCPUInfo()
-        self.initThread()
-        self.startThread()
-        self.initSignals()
+        # self.setCPUInfo()
+        # self.initThread()
+        # self.startThread()
+        # self.initSignals()
 
     def setCPUInfo(self):
         uname = platform.uname()
@@ -165,13 +169,9 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.horizontalLayout_3.addLayout(layout_dynamic)
 
     def initSignals(self):
-        self.ui.pushButton.clicked.connect(self.closeWindow)
         self.thread1.workerCPU.connect(self.reportCPU)
 
         self.thread1.finished.connect(self.thread1.deleteLater)
-
-    def closeWindow(self):
-        self.close()
 
     def initThread(self):
         self.thread1 = WorkerRM()
