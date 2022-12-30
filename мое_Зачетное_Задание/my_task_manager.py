@@ -151,22 +151,24 @@ class ResourceMonitor(QtWidgets.QWidget):
         super().__init__(parent)
         self.ui = UI_rm()
         self.ui.setupUi(self)
-        # self.setCPUInfo()
+        self.setCPUInfo()
         # self.initThread()
         # self.startThread()
         # self.initSignals()
 
     def setCPUInfo(self):
         uname = platform.uname()
-        self.ui.label_2.setText(uname.processor)  # Процессор
-        self.ui.label_13.setText(f'{psutil.cpu_count(logical=True)}')  # Всего ядер
-        self.ui.label_21.setText(f'{psutil.cpu_count(logical=False)}')  # Физические ядра
+        cpufreg = psutil.cpu_freq()
+        self.ui.lineEdit_4.setText(uname.processor.split()[0])  # Процессор
+        self.ui.lineEdit.setText(f'{psutil.cpu_count(logical=True)}')  # Всего ядер
+        self.ui.lineEdit_2.setText(f'{psutil.cpu_count(logical=False)}')  # Физические ядра
+        self.ui.lineEdit_3.setText(f'{cpufreg.max:.2f} МГц')
         layout_dynamic = QtWidgets.QVBoxLayout()
         for core, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
             label_dunamic = QtWidgets.QLabel(f'Ядро {core}: {percentage} %')
-            layout_dynamic.addWidget(label_dunamic)
-            # print(f'Ядро {core}: {percentage} %')
-        self.ui.horizontalLayout_3.addLayout(layout_dynamic)
+        #     layout_dynamic.addWidget(label_dunamic)
+        #     # print(f'Ядро {core}: {percentage} %')
+        # self.ui.horizontalLayout_3.addLayout(layout_dynamic)
 
     def initSignals(self):
         self.thread1.workerCPU.connect(self.reportCPU)
@@ -180,14 +182,7 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.thread1.start()
 
     def reportCPU(self, s):
-        self.ui.label_22.setText(f'{s[2]:.2f}МГц')
-        self.ui.label_23.setText(f'{s[3]:.2f}МГц')
-        self.ui.label_24.setText(f'{s[0]:.2f}МГц')
-        self.ui.progressBar.setValue(s[1])
-        self.ui.label_25.setText(f'{s[4]}')
-        self.ui.label_26.setText(f'{s[5]}')
-        self.ui.label_27.setText(f'{s[6]}')
-        self.ui.progressBar_3.setValue(s[8])
+        ...
 
 
 if __name__ == '__main__':
