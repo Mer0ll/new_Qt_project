@@ -47,10 +47,11 @@ class MainWindows(QtWidgets.QWidget):
 
     def initChildWindow(self):
         self.flag = self.ui.comboBox.currentText()
-        if self.flag == 'Монитор ресурсов':
-            self.openResourceMonitor()
-        if self.flag in ('Запущенные процессы', 'Службы', 'Планировщик задач'):
-            self.openOpenChildWindow()
+        match self.flag:
+            case 'Монитор ресурсов':
+                self.openResourceMonitor()
+            case 'Запущенные процессы' | 'Службы' | 'Планировщик задач':
+                self.openOpenChildWindow()
 
     def openOpenChildWindow(self):
         self.childWindow = ChildWindow(self.flag)
