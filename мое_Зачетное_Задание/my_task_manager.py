@@ -80,13 +80,20 @@ class WorkerRM(QtCore.QThread):
     def run(self) -> None:
         if self.delay is None:
             self.delay = 1
+        uname = platform.uname()
         cpufreg = psutil.cpu_freq()
         svmem = psutil.virtual_memory()
+        cpufreg = psutil.cpu_freq()
+
         while True:
+            name_processor = uname.processor.split()[0]  # Процессор
+            cpu_logic = psutil.cpu_count(logical=True)  # Всего ядер
+            cpu_fisic = psutil.cpu_count(logical=False)  # Физические ядра
+            cpu_max = cpufreg.max  # Максимальная частота
             currentfreq = cpufreg.current  # Текущая частота
             totalCPUusage = psutil.cpu_percent()  # Общая загруженность процессора
             cpufregmax = cpufreg.max  # Максимальная частота
-            cpufregmin = cpufreg.min  # Минимальная частота
+            # cpufregmin = cpufreg.min  # Минимальная частота
 
             ramsize = self.get_size(svmem.total)  # Объем Ram
             avaram = self.get_size(svmem.available)  # Доступно Ram
@@ -94,16 +101,20 @@ class WorkerRM(QtCore.QThread):
             percentram = svmem.percent  # Процент
             fullcpu_percent = psutil.cpu_percent(percpu=True, interval=1)
 
-            self.workerCPU.emit([currentfreq,
+            self.workerCPU.emit([name_processor,
+                                 cpu_logic,
+                                 cpu_fisic,
+                                 cpu_max,
+                                 currentfreq,
                                  totalCPUusage,
                                  cpufregmax,
-                                 cpufregmin,
-                                 ramsize,
-                                 avaram,
-                                 usedram,
-                                 usedram,
-                                 percentram,
-                                 fullcpu_percent])
+                                 # ramsize,
+                                 # avaram,
+                                 # usedram,
+                                 # usedram,
+                                 # percentram,
+                                 fullcpu_percent
+                                 ])
             time.sleep(self.delay)
         self.finished.emit()
 
@@ -152,38 +163,45 @@ class ResourceMonitor(QtWidgets.QWidget):
         super().__init__(parent)
         self.ui = UI_rm()
         self.ui.setupUi(self)
-        self.setCPUInfo()
-        # self.initThread()
-        # self.startThread()
-        # self.initSignals()
+        self.initThread()
 
-    def setCPUInfo(self):
-        uname = platform.uname()
-        cpufreg = psutil.cpu_freq()
-        self.ui.lineEdit_4.setText(uname.processor.split()[0])  # Процессор
-        self.ui.lineEdit.setText(f'{psutil.cpu_count(logical=True)}')  # Всего ядер
-        self.ui.lineEdit_2.setText(f'{psutil.cpu_count(logical=False)}')  # Физические ядра
-        self.ui.lineEdit_3.setText(f'{cpufreg.max:.2f} МГц')
-        layout_dynamic = QtWidgets.QVBoxLayout()
-        for core, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
-            label_dunamic = QtWidgets.QLabel(f'Ядро {core}: {percentage} %')
-        #     layout_dynamic.addWidget(label_dunamic)
-        #     # print(f'Ядро {core}: {percentage} %')
-        # self.ui.horizontalLayout_3.addLayout(layout_dynamic)
+        self.initSignals()
+
+
+
+
+
 
     def initSignals(self):
-        self.thread1.workerCPU.connect(self.reportCPU)
+        ...
 
-        self.thread1.finished.connect(self.thread1.deleteLater)
+
+
 
     def initThread(self):
         self.thread1 = WorkerRM()
-
-    def startThread(self):
+        self.thread1.workerCPU.connect(self.report)
         self.thread1.start()
+        # self.thread1.finished.connect(self.thread1.deleteLater)
 
-    def reportCPU(self, s):
-        ...
+
+    def report(self, s):
+        self.ui.lineEdit_4.setText(s[0])  # Процессор
+        self.ui.lineEdit.setText(f'{s[1]}')  # Всего ядер
+        self.ui.lineEdit_2.setText(f'{s[2]}')  # Физические ядра
+        self.ui.lineEdit_3.setText(f'{s[3]:.2f} МГц')  # Максимальная частота
+        self.ui.lineEdit_5.setText(f'{s[4 ]:.2f} МГц')  # Максимальная частота
+
+        layout_dynamic = QtWidgets.QVBoxLayout()
+        for core, percentage in enumerate(s[-1]):
+            label_dunamic = QtWidgets.QLabel(f'Ядро {core}: {percentage} %')
+            progressbar_dunamic = QtWidgets.QProgressBar()
+            layout_dynamic.addWidget(label_dunamic)
+            layout_dynamic.addWidget(progressbar_dunamic)
+
+            layout_dynamic.addWidget(label_dunamic)
+            print(f'Ядро {core}: {percentage} %')
+            self.ui.verticalLayout.addLayout(layout_dynamic)
 
 
 if __name__ == '__main__':
