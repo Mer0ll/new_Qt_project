@@ -81,7 +81,7 @@ class WorkerRM(QtCore.QThread):
         if self.delay is None:
             self.delay = 1
         uname = platform.uname()
-        cpufreg = psutil.cpu_freq()
+        # cpufreg = psutil.cpu_freq()
         svmem = psutil.virtual_memory()
         cpufreg = psutil.cpu_freq()
 
@@ -165,10 +165,11 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.setupUi(self)
         self.initThread()
         self.initProgresBar()
+        self.initRAmInfo()
 
     def initThread(self):
         self.thread1 = WorkerRM()
-        self.thread1.workerCPU.connect(self.report)
+        self.thread1.workerCPU.connect(self.reportCPU)
         self.thread1.start()
         # self.thread1.finished.connect(self.thread1.deleteLater)
 
@@ -196,7 +197,7 @@ class ResourceMonitor(QtWidgets.QWidget):
 
         self.ui.verticalLayout.addLayout(layout_dynamic)
 
-    def report(self, s):
+    def reportCPU(self, s):
         self.ui.lineEdit_4.setText(s[0])  # Процессор
         self.ui.lineEdit.setText(f'{s[1]}')  # Всего ядер
         self.ui.lineEdit_2.setText(f'{s[2]}')  # Физические ядра
@@ -209,6 +210,29 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.lineEdit_8.setText(s[8])
         self.ui.lineEdit_7.setText(s[9])
         self.ui.progressBar.setValue(s[-2])
+
+    def initRAmInfo(self):
+        partitions = psutil.disk_partitions()
+        disk_info_layout = QtWidgets.QVBoxLayout()
+        for partition in partitions:
+            disk_lable = QtWidgets.QLabel(f'=== Диск: {partition.device}')
+            disk_info_layout.addWidget(disk_lable)
+            type_disk = QtWidgets.QLabel(f' Тип файловой системы: {partition.fstype}')
+            disk_info_layout.addWidget(type_disk)
+            try:
+                partition_usage = psutil.disk_usage(partition.mountpoint)
+            except PermissionError:
+                continue
+            total_usage_disk = QtWidgets.QLabel(f'    Общий объем: {WorkerRM.get_size(partition_usage.total)}')
+            disk_info_layout.addWidget(total_usage_disk)
+            used_usage = QtWidgets.QLabel(f'    Используется: {WorkerRM.get_size(partition_usage.used)}')
+            disk_info_layout.addWidget(used_usage)
+            usage_free = QtWidgets.QLabel(f'    Свободно: {WorkerRM.get_size(partition_usage.free)}')
+            disk_info_layout.addWidget(usage_free)
+            usage_percent = QtWidgets.QLabel(f'    Процент: {partition_usage.percent} %')
+            disk_info_layout.addWidget(usage_percent)
+
+        self.ui.groupBox_4.setLayout(disk_info_layout)
 
 
 if __name__ == '__main__':
