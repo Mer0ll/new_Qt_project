@@ -81,7 +81,6 @@ class WorkerRM(QtCore.QThread):
         if self.delay is None:
             self.delay = 1
         uname = platform.uname()
-        # cpufreg = psutil.cpu_freq()
         svmem = psutil.virtual_memory()
         cpufreg = psutil.cpu_freq()
 
@@ -93,7 +92,6 @@ class WorkerRM(QtCore.QThread):
             currentfreq = cpufreg.current  # Текущая частота
             totalCPUusage = psutil.cpu_percent()  # Общая загруженность процессора
             cpufregmax = cpufreg.max  # Максимальная частота
-            # cpufregmin = cpufreg.min  # Минимальная частота
 
             ramsize = self.get_size(svmem.total)  # Объем Ram
             avaram = self.get_size(svmem.available)  # Доступно Ram
@@ -172,6 +170,7 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.thread1 = WorkerRM()
         self.thread1.workerCPU.connect(self.reportCPU)
         self.thread1.start()
+        self.thread1.finished.connect(self.thread1.deleteLater)
 
     def initProgresBar(self):
         layout_dynamic = QtWidgets.QVBoxLayout()
@@ -236,7 +235,6 @@ class ResourceMonitor(QtWidgets.QWidget):
 
     def initSignal(self):
         self.ui.spinBox.valueChanged.connect(self.InfoDelay)
-        self.thread1.finished.connect(self.thread1.deleteLater)
 
     def InfoDelay(self):
         self.thread1.delay = self.ui.spinBox.value()
