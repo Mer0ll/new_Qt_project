@@ -164,7 +164,7 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui = UI_rm()
         self.ui.setupUi(self)
         self.initThread()
-
+        self.initProgresBar()
         self.initSignals()
 
 
@@ -184,6 +184,21 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.thread1.start()
         # self.thread1.finished.connect(self.thread1.deleteLater)
 
+    def initProgresBar(self):
+        layout_dynamic = QtWidgets.QVBoxLayout()
+        self.bar_list = []
+        for core, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1), 1):
+            sup_layout = QtWidgets.QHBoxLayout()
+            label_dunamic = QtWidgets.QLabel(f'Ядро {core}:')
+            progressbar_dunamic = QtWidgets.QProgressBar()
+            self.bar_list.append(progressbar_dunamic)
+            progressbar_dunamic.setValue(percentage)
+            sup_layout.addWidget(label_dunamic)
+            sup_layout.addWidget(progressbar_dunamic)
+            layout_dynamic.addLayout(sup_layout)
+        self.ui.verticalLayout.addLayout(layout_dynamic)
+
+
 
     def report(self, s):
         self.ui.lineEdit_4.setText(s[0])  # Процессор
@@ -191,17 +206,8 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.lineEdit_2.setText(f'{s[2]}')  # Физические ядра
         self.ui.lineEdit_3.setText(f'{s[3]:.2f} МГц')  # Максимальная частота
         self.ui.lineEdit_5.setText(f'{s[4 ]:.2f} МГц')  # Максимальная частота
-
-        layout_dynamic = QtWidgets.QVBoxLayout()
-        for core, percentage in enumerate(s[-1]):
-            label_dunamic = QtWidgets.QLabel(f'Ядро {core}: {percentage} %')
-            progressbar_dunamic = QtWidgets.QProgressBar()
-            layout_dynamic.addWidget(label_dunamic)
-            layout_dynamic.addWidget(progressbar_dunamic)
-
-            layout_dynamic.addWidget(label_dunamic)
-            print(f'Ядро {core}: {percentage} %')
-            self.ui.verticalLayout.addLayout(layout_dynamic)
+        for corre in range(len(s[-1])):
+            self.bar_list[corre].setValue(s[-1][corre])
 
 
 if __name__ == '__main__':
