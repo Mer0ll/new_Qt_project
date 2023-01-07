@@ -62,23 +62,23 @@ for partition in partitions:
     print(f'    Свободно: {get_size(partition_usage.free)}')
     print(f'    Процент: {partition_usage.percent} %')
 
-print('=' * 40, 'Информация о сети', '=' * 40)
-ip_addrs = psutil.net_if_addrs()
-for interface_name, interface_adresses in ip_addrs.items():
-    print(f'=== Интерфейс: {interface_name} ===')
-    for address in interface_adresses:
-        if str(address.family) == 'AddressFamily.AF_INET':
-            print(f'    IP: {address.address}')
-            print(f'    Сетевая маска: {address.netmask}')
-            print(f'    Широковещательнай IP-адрес: {address.broadcast}')
-        elif str(address.family) == 'AddressFamily.AF_PACKET':
-            print(f'    MAC-адрес: {address.address}')
-            print(f'    Сетевая маска: {address.netmask}')
-            print(f'    Широковещательнай IP-адрес: {address.broadcast}')
-
-net_io = psutil.net_io_counters()
-print(f'Общее кол-во отправленных байтов: {get_size(net_io.bytes_sent)}')
-print(f'Общее кол-во полученных байтов: {get_size(net_io.bytes_recv)}')
+# print('=' * 40, 'Информация о сети', '=' * 40)
+# ip_addrs = psutil.net_if_addrs()
+# for interface_name, interface_adresses in ip_addrs.items():
+#     print(f'=== Интерфейс: {interface_name} ===')
+#     for address in interface_adresses:
+#         if str(address.family) == 'AddressFamily.AF_INET':
+#             print(f'    IP: {address.address}')
+#             print(f'    Сетевая маска: {address.netmask}')
+#             print(f'    Широковещательнай IP-адрес: {address.broadcast}')
+#         elif str(address.family) == 'AddressFamily.AF_PACKET':
+#             print(f'    MAC-адрес: {address.address}')
+#             print(f'    Сетевая маска: {address.netmask}')
+#             print(f'    Широковещательнай IP-адрес: {address.broadcast}')
+#
+# net_io = psutil.net_io_counters()
+# print(f'Общее кол-во отправленных байтов: {get_size(net_io.bytes_sent)}')
+# print(f'Общее кол-во полученных байтов: {get_size(net_io.bytes_recv)}')
 #
 
 

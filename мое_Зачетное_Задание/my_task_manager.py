@@ -166,12 +166,12 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.initThread()
         self.initProgresBar()
         self.initRAmInfo()
+        self.initSignal()
 
     def initThread(self):
         self.thread1 = WorkerRM()
         self.thread1.workerCPU.connect(self.reportCPU)
         self.thread1.start()
-        # self.thread1.finished.connect(self.thread1.deleteLater)
 
     def initProgresBar(self):
         layout_dynamic = QtWidgets.QVBoxLayout()
@@ -222,7 +222,7 @@ class ResourceMonitor(QtWidgets.QWidget):
             try:
                 partition_usage = psutil.disk_usage(partition.mountpoint)
             except PermissionError:
-                continue
+                break
             total_usage_disk = QtWidgets.QLabel(f'    Общий объем: {WorkerRM.get_size(partition_usage.total)}')
             disk_info_layout.addWidget(total_usage_disk)
             used_usage = QtWidgets.QLabel(f'    Используется: {WorkerRM.get_size(partition_usage.used)}')
@@ -233,6 +233,13 @@ class ResourceMonitor(QtWidgets.QWidget):
             disk_info_layout.addWidget(usage_percent)
 
         self.ui.groupBox_4.setLayout(disk_info_layout)
+
+    def initSignal(self):
+        self.ui.spinBox.valueChanged.connect(self.InfoDelay)
+        self.thread1.finished.connect(self.thread1.deleteLater)
+
+    def InfoDelay(self):
+        self.thread1.delay = self.ui.spinBox.value()
 
 
 if __name__ == '__main__':
