@@ -108,11 +108,11 @@ class WorkerRM(QtCore.QThread):
                                  currentfreq,
                                  totalCPUusage,
                                  cpufregmax,
-                                 # ramsize,
-                                 # avaram,
-                                 # usedram,
-                                 # usedram,
-                                 # percentram,
+                                 ramsize,
+                                 avaram,
+                                 usedram,
+                                 usedram,
+                                 percentram,
                                  fullcpu_percent
                                  ])
             time.sleep(self.delay)
@@ -165,18 +165,6 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.setupUi(self)
         self.initThread()
         self.initProgresBar()
-        self.initSignals()
-
-
-
-
-
-
-    def initSignals(self):
-        ...
-
-
-
 
     def initThread(self):
         self.thread1 = WorkerRM()
@@ -208,17 +196,19 @@ class ResourceMonitor(QtWidgets.QWidget):
 
         self.ui.verticalLayout.addLayout(layout_dynamic)
 
-
-
     def report(self, s):
         self.ui.lineEdit_4.setText(s[0])  # Процессор
         self.ui.lineEdit.setText(f'{s[1]}')  # Всего ядер
         self.ui.lineEdit_2.setText(f'{s[2]}')  # Физические ядра
         self.ui.lineEdit_3.setText(f'{s[3]:.2f} МГц')  # Максимальная частота
-        self.ui.lineEdit_5.setText(f'{s[4 ]:.2f} МГц')  # Максимальная частота
+        self.ui.lineEdit_5.setText(f'{s[4]:.2f} МГц')  # Максимальная частота
         for corre in range(len(s[-1])):
             self.bar_list[corre].setValue(s[-1][corre])
         self.bar_list[-1].setValue(s[5])
+        self.ui.lineEdit_6.setText(s[7])
+        self.ui.lineEdit_8.setText(s[8])
+        self.ui.lineEdit_7.setText(s[9])
+        self.ui.progressBar.setValue(s[-2])
 
 
 if __name__ == '__main__':

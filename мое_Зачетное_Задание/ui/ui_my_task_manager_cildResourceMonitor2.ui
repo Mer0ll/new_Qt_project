@@ -78,9 +78,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -111,9 +124,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -144,9 +170,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -177,9 +216,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -210,9 +262,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -256,9 +321,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -289,9 +367,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -322,9 +413,22 @@
                    </property>
                    <property name="font">
                     <font>
+                     <family>Georgia</family>
                      <pointsize>9</pointsize>
                      <bold>false</bold>
                     </font>
+                   </property>
+                   <property name="mouseTracking">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="cursorMoveStyle">
+                    <enum>Qt::LogicalMoveStyle</enum>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -341,29 +445,33 @@
                     </font>
                    </property>
                    <property name="text">
-                    <string>Свободно:</string>
+                    <string>Процент:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_9">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <bold>false</bold>
-                    </font>
+                  <widget class="QProgressBar" name="progressBar">
+                   <property name="value">
+                    <number>24</number>
                    </property>
                   </widget>
                  </item>
                 </layout>
                </item>
               </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>

@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+    QLineEdit, QProgressBar, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -55,6 +55,10 @@ class Ui_Form(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_4 = QLabel(self.groupBox_2)
         self.label_4.setObjectName(u"label_4")
+        font1 = QFont()
+        font1.setPointSize(9)
+        font1.setBold(False)
+        self.label_4.setFont(font1)
 
         self.horizontalLayout_4.addWidget(self.label_4)
 
@@ -65,6 +69,7 @@ class Ui_Form(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.lineEdit_4.sizePolicy().hasHeightForWidth())
         self.lineEdit_4.setSizePolicy(sizePolicy1)
+        self.lineEdit_4.setFont(font1)
 
         self.horizontalLayout_4.addWidget(self.lineEdit_4)
 
@@ -75,6 +80,7 @@ class Ui_Form(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.label = QLabel(self.groupBox_2)
         self.label.setObjectName(u"label")
+        self.label.setFont(font1)
 
         self.horizontalLayout_2.addWidget(self.label)
 
@@ -82,6 +88,7 @@ class Ui_Form(object):
         self.lineEdit.setObjectName(u"lineEdit")
         sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
         self.lineEdit.setSizePolicy(sizePolicy1)
+        self.lineEdit.setFont(font1)
 
         self.horizontalLayout_2.addWidget(self.lineEdit)
 
@@ -92,6 +99,7 @@ class Ui_Form(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.label_2 = QLabel(self.groupBox_2)
         self.label_2.setObjectName(u"label_2")
+        self.label_2.setFont(font1)
 
         self.horizontalLayout_3.addWidget(self.label_2)
 
@@ -99,6 +107,7 @@ class Ui_Form(object):
         self.lineEdit_2.setObjectName(u"lineEdit_2")
         sizePolicy1.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
         self.lineEdit_2.setSizePolicy(sizePolicy1)
+        self.lineEdit_2.setFont(font1)
 
         self.horizontalLayout_3.addWidget(self.lineEdit_2)
 
@@ -109,6 +118,7 @@ class Ui_Form(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.label_3 = QLabel(self.groupBox_2)
         self.label_3.setObjectName(u"label_3")
+        self.label_3.setFont(font1)
 
         self.horizontalLayout_5.addWidget(self.label_3)
 
@@ -116,6 +126,7 @@ class Ui_Form(object):
         self.lineEdit_3.setObjectName(u"lineEdit_3")
         sizePolicy1.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
         self.lineEdit_3.setSizePolicy(sizePolicy1)
+        self.lineEdit_3.setFont(font1)
 
         self.horizontalLayout_5.addWidget(self.lineEdit_3)
 
@@ -126,6 +137,7 @@ class Ui_Form(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.label_5 = QLabel(self.groupBox_2)
         self.label_5.setObjectName(u"label_5")
+        self.label_5.setFont(font1)
 
         self.horizontalLayout_6.addWidget(self.label_5)
 
@@ -133,6 +145,7 @@ class Ui_Form(object):
         self.lineEdit_5.setObjectName(u"lineEdit_5")
         sizePolicy1.setHeightForWidth(self.lineEdit_5.sizePolicy().hasHeightForWidth())
         self.lineEdit_5.setSizePolicy(sizePolicy1)
+        self.lineEdit_5.setFont(font1)
 
         self.horizontalLayout_6.addWidget(self.lineEdit_5)
 
@@ -155,6 +168,7 @@ class Ui_Form(object):
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.label_6 = QLabel(self.groupBox_3)
         self.label_6.setObjectName(u"label_6")
+        self.label_6.setFont(font1)
 
         self.horizontalLayout_7.addWidget(self.label_6)
 
@@ -162,6 +176,7 @@ class Ui_Form(object):
         self.lineEdit_6.setObjectName(u"lineEdit_6")
         sizePolicy1.setHeightForWidth(self.lineEdit_6.sizePolicy().hasHeightForWidth())
         self.lineEdit_6.setSizePolicy(sizePolicy1)
+        self.lineEdit_6.setFont(font1)
 
         self.horizontalLayout_7.addWidget(self.lineEdit_6)
 
@@ -172,6 +187,7 @@ class Ui_Form(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.label_8 = QLabel(self.groupBox_3)
         self.label_8.setObjectName(u"label_8")
+        self.label_8.setFont(font1)
 
         self.horizontalLayout_9.addWidget(self.label_8)
 
@@ -179,6 +195,7 @@ class Ui_Form(object):
         self.lineEdit_8.setObjectName(u"lineEdit_8")
         sizePolicy1.setHeightForWidth(self.lineEdit_8.sizePolicy().hasHeightForWidth())
         self.lineEdit_8.setSizePolicy(sizePolicy1)
+        self.lineEdit_8.setFont(font1)
 
         self.horizontalLayout_9.addWidget(self.lineEdit_8)
 
@@ -189,6 +206,7 @@ class Ui_Form(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.label_7 = QLabel(self.groupBox_3)
         self.label_7.setObjectName(u"label_7")
+        self.label_7.setFont(font1)
 
         self.horizontalLayout_8.addWidget(self.label_7)
 
@@ -196,6 +214,7 @@ class Ui_Form(object):
         self.lineEdit_7.setObjectName(u"lineEdit_7")
         sizePolicy1.setHeightForWidth(self.lineEdit_7.sizePolicy().hasHeightForWidth())
         self.lineEdit_7.setSizePolicy(sizePolicy1)
+        self.lineEdit_7.setFont(font1)
 
         self.horizontalLayout_8.addWidget(self.lineEdit_7)
 
@@ -206,21 +225,25 @@ class Ui_Form(object):
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.label_9 = QLabel(self.groupBox_3)
         self.label_9.setObjectName(u"label_9")
+        self.label_9.setFont(font1)
 
         self.horizontalLayout_10.addWidget(self.label_9)
 
-        self.lineEdit_9 = QLineEdit(self.groupBox_3)
-        self.lineEdit_9.setObjectName(u"lineEdit_9")
-        sizePolicy1.setHeightForWidth(self.lineEdit_9.sizePolicy().hasHeightForWidth())
-        self.lineEdit_9.setSizePolicy(sizePolicy1)
+        self.progressBar = QProgressBar(self.groupBox_3)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setValue(24)
 
-        self.horizontalLayout_10.addWidget(self.lineEdit_9)
+        self.horizontalLayout_10.addWidget(self.progressBar)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_10)
 
 
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer)
 
 
         self.horizontalLayout_11.addWidget(self.groupBox_3)
@@ -273,7 +296,7 @@ class Ui_Form(object):
         self.label_6.setText(QCoreApplication.translate("Form", u"\u041e\u0431\u044a\u0435\u043c:", None))
         self.label_8.setText(QCoreApplication.translate("Form", u"\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e:", None))
         self.label_7.setText(QCoreApplication.translate("Form", u"\u0418\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442\u0441\u044f:", None))
-        self.label_9.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u043e\u0431\u043e\u0434\u043d\u043e:", None))
+        self.label_9.setText(QCoreApplication.translate("Form", u"\u041f\u0440\u043e\u0446\u0435\u043d\u0442:", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("Form", u"Disc", None))
         self.pushButton.setText(QCoreApplication.translate("Form", u"\u0417\u0430\u043a\u0440\u044b\u0442\u044c", None))
     # retranslateUi
