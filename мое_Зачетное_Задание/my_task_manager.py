@@ -196,6 +196,16 @@ class ResourceMonitor(QtWidgets.QWidget):
             sup_layout.addWidget(label_dunamic)
             sup_layout.addWidget(progressbar_dunamic)
             layout_dynamic.addLayout(sup_layout)
+        sup_layout = QtWidgets.QHBoxLayout()
+        label_dunamic = QtWidgets.QLabel(f'Общая загруженность процессора: ')
+        percent = psutil.cpu_percent()
+        progressbar_dunamic = QtWidgets.QProgressBar()
+        self.bar_list.append(progressbar_dunamic)
+        progressbar_dunamic.setValue(percent)
+        sup_layout.addWidget(label_dunamic)
+        sup_layout.addWidget(progressbar_dunamic)
+        layout_dynamic.addLayout(sup_layout)
+
         self.ui.verticalLayout.addLayout(layout_dynamic)
 
 
@@ -208,6 +218,7 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ui.lineEdit_5.setText(f'{s[4 ]:.2f} МГц')  # Максимальная частота
         for corre in range(len(s[-1])):
             self.bar_list[corre].setValue(s[-1][corre])
+        self.bar_list[-1].setValue(s[5])
 
 
 if __name__ == '__main__':
